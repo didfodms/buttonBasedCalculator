@@ -85,6 +85,10 @@ function inputOper(op) {
 }
 
 function inputEqu() {
+  if (left === null || right === null || !oper) {
+    return;
+  }
+
   if (res) {
     left = resValue;
     right = null;
