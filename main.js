@@ -2,6 +2,7 @@ let left = null,
   right = null,
   oper = null,
   res = false;
+resValue = null;
 
 function save() {
   const inp = document.getElementById("top-inp");
@@ -20,26 +21,25 @@ function save() {
   inp.value = value;
 
   if (res === true) {
-    let result = "";
     switch (oper) {
       case "+":
-        result = parseInt(left) + parseInt(right);
+        resValue = parseInt(left) + parseInt(right);
         break;
       case "-":
-        result = parseInt(left) - parseInt(right);
+        resValue = parseInt(left) - parseInt(right);
         break;
       case "*":
-        result = parseInt(left) * parseInt(right);
+        resValue = parseInt(left) * parseInt(right);
         break;
       case "/":
-        result = parseInt(left) / parseInt(right);
+        resValue = parseInt(left) / parseInt(right);
         break;
       default:
         break;
     }
-    value += `= ${result}`;
+    value += "= " + resValue;
+    inp.value = value;
   }
-  inp.value = value;
 }
 
 function inputNum(num) {
@@ -64,8 +64,36 @@ function inputNum(num) {
 }
 
 function inputOper(op) {
-  if (left === null) return;
+  if (left === null && op === "-") {
+    left = "-";
+    save();
+    return;
+  }
+
+  if (left === "-" && op === "-") {
+    return;
+  }
+
+  if (op === "-" && oper !== null && right === null) {
+    right = "-";
+    save();
+    return;
+  }
 
   oper = op;
+  save();
+}
+
+function inputEqu() {
+  if (res) {
+    left = resValue;
+    right = null;
+    oper = null;
+    res = false;
+    resValue = null;
+  } else {
+    res = true;
+  }
+
   save();
 }
